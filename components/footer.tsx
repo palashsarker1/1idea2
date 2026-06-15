@@ -39,13 +39,12 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             {/* Brand */}
             <div className="col-span-2 lg:col-span-2">
-              <Link href="/" className="flex items-center gap-2 mb-4">
-                <div className="relative w-10 h-10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-rainbow-purple via-rainbow-blue to-rainbow-cyan rounded-xl" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">1</span>
-                  </div>
-                </div>
+              <Link href="/" className="flex items-center gap-3 mb-4">
+                <img
+                  src="https://i.ibb.co/SDL5CSgV/1idea.png"
+                  alt="1Idea Logo"
+                  className="h-10 w-10 rounded-xl object-contain"
+                />
                 <span className="text-xl font-bold rainbow-text">1Idea</span>
               </Link>
               <p className="text-gray-600 text-sm leading-relaxed max-w-xs mb-6">

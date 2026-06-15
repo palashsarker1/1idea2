@@ -56,13 +56,12 @@ export default function LoginPage() {
           <div className="glass-card rounded-3xl p-8 shadow-premium">
             {/* Logo */}
             <div className="text-center mb-8">
-              <Link href="/" className="inline-flex items-center gap-2 mb-6">
-                <div className="relative w-12 h-12">
-                  <div className="absolute inset-0 bg-gradient-to-br from-rainbow-purple via-rainbow-blue to-rainbow-cyan rounded-xl" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">1</span>
-                  </div>
-                </div>
+              <Link href="/" className="inline-flex items-center gap-3 mb-6">
+                <img
+                  src="https://i.ibb.co/SDL5CSgV/1idea.png"
+                  alt="1Idea Logo"
+                  className="w-12 h-12 rounded-xl object-contain"
+                />
                 <span className="text-2xl font-bold rainbow-text">1Idea</span>
               </Link>
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h1>

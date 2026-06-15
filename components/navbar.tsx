@@ -48,13 +48,12 @@ export function Navbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative w-10 h-10">
-              <div className="absolute inset-0 bg-gradient-to-br from-rainbow-purple via-rainbow-blue to-rainbow-cyan rounded-xl opacity-80 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">1</span>
-              </div>
-            </div>
+          <Link href="/" className="flex items-center gap-3 group">
+            <img
+              src="https://i.ibb.co/SDL5CSgV/1idea.png"
+              alt="1Idea Logo"
+              className="h-10 w-10 rounded-xl object-contain transition-transform group-hover:scale-110"
+            />
             <span className="text-xl font-bold rainbow-text hidden sm:block">1Idea</span>
           </Link>
 

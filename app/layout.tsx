@@ -39,7 +39,7 @@ export const metadata: Metadata = {
       'AI-powered platform for turning your ideas into reality with cutting-edge tools and resources.',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://i.ibb.co/SDL5CSgV/1idea.png',
         width: 1200,
         height: 630,
         alt: '1Idea - Turn Ideas Into Reality',
@@ -51,15 +51,14 @@ export const metadata: Metadata = {
     title: '1Idea - Turn Ideas Into Reality',
     description:
       'AI-powered platform for turning your ideas into reality with cutting-edge tools and resources.',
-    images: ['/og-image.png'],
+    images: ['https://i.ibb.co/SDL5CSgV/1idea.png'],
     creator: '@1idea',
   },
   icons: {
     icon: [
-      { url: '/icons/favicon.ico', sizes: 'any' },
-      { url: '/icons/favicon.png', type: 'image/png' },
+      { url: 'https://i.ibb.co/SDL5CSgV/1idea.png', sizes: '32x32', type: 'image/png' },
     ],
-    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180' }],
+    apple: [{ url: 'https://i.ibb.co/SDL5CSgV/1idea.png', sizes: '180x180' }],
   },
   manifest: '/manifest.json',
   themeColor: '#8B5CF6',
@@ -83,7 +82,8 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="1Idea" />
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="https://i.ibb.co/SDL5CSgV/1idea.png" />
+        <link rel="icon" href="https://i.ibb.co/SDL5CSgV/1idea.png" type="image/png" />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <Providers>
