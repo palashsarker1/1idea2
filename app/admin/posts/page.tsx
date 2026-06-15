@@ -3,9 +3,20 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Plus, Search, Edit, Trash2, Eye, MoreVertical } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Eye, RefreshCw, Check, AlertCircle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 
@@ -19,13 +30,25 @@ interface Post {
   created_at: string;
 }
 
+interface SyncResult {
+  total: number;
+  synced: number;
+  skipped: number;
+  errors: string[];
+}
+
 export default function AdminPostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
+  const [showSyncDialog, setShowSyncDialog] = useState(false);
+  const [markdownCount, setMarkdownCount] = useState(0);
 
   useEffect(() => {
     fetchPosts();
+    fetchMarkdownCount();
   }, []);
 
   async function fetchPosts() {
@@ -41,6 +64,42 @@ export default function AdminPostsPage() {
       setPosts(data || []);
     }
     setLoading(false);
+  }
+
+  async function fetchMarkdownCount() {
+    try {
+      const response = await fetch('/api/blog?count=true');
+      const data = await response.json();
+      setMarkdownCount(data.count || 0);
+    } catch (error) {
+      console.error('Failed to fetch markdown count:', error);
+    }
+  }
+
+  async function syncMarkdownPosts() {
+    setSyncing(true);
+    setSyncResult(null);
+
+    try {
+      const response = await fetch('/api/admin/sync-markdown', {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSyncResult(data.results);
+        toast.success(data.message);
+        fetchPosts(); // Refresh posts list
+      } else {
+        toast.error(data.error || 'Sync failed');
+      }
+    } catch (error) {
+      toast.error('Failed to sync markdown posts');
+      console.error('Sync error:', error);
+    } finally {
+      setSyncing(false);
+    }
   }
 
   async function deletePost(id: string) {
@@ -63,6 +122,9 @@ export default function AdminPostsPage() {
       post.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const publishedCount = posts.filter((p) => p.status === 'published').length;
+  const draftCount = posts.filter((p) => p.status === 'draft').length;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -71,12 +133,145 @@ export default function AdminPostsPage() {
           <h1 className="text-3xl font-bold text-gray-900">Posts</h1>
           <p className="text-gray-600 mt-1">Manage your blog content</p>
         </div>
-        <Link href="/admin/posts/new">
-          <Button className="rainbow-button-solid">
-            <Plus className="w-4 h-4 mr-2" />
-            New Post
-          </Button>
-        </Link>
+        <div className="flex gap-3">
+          {/* Sync Markdown Dialog */}
+          <Dialog open={showSyncDialog} onOpenChange={setShowSyncDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <RefreshCw className="w-4 h-4" />
+                Sync Markdown ({markdownCount})
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5" />
+                  Import Markdown Posts
+                </DialogTitle>
+                <DialogDescription>
+                  Sync all markdown files from <code className="bg-gray-100 px-1 rounded">/content/blog/</code> to the database.
+                  Existing posts will be updated if the markdown file is newer.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="py-4">
+                <Card className="bg-gray-50 border-gray-100">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-600">Markdown files found:</span>
+                      <Badge variant="secondary">{markdownCount} posts</Badge>
+                    </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-600">Database posts:</span>
+                      <Badge variant="secondary">{posts.length} posts</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600">Potential new imports:</span>
+                      <Badge className="bg-rainbow-purple/10 text-rainbow-purple">
+                        {Math.max(0, markdownCount - posts.length)}
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {syncResult && (
+                <div className="py-2">
+                  <Card className="bg-green-50 border-green-200">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Check className="w-5 h-5 text-green-600" />
+                        <span className="font-medium text-green-800">Sync Complete</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4 text-sm text-green-700">
+                        <div>
+                          <div className="font-medium">{syncResult.synced}</div>
+                          <div className="text-xs">Synced</div>
+                        </div>
+                        <div>
+                          <div className="font-medium">{syncResult.skipped}</div>
+                          <div className="text-xs">Skipped</div>
+                        </div>
+                        <div>
+                          <div className="font-medium">{syncResult.errors.length}</div>
+                          <div className="text-xs">Errors</div>
+                        </div>
+                      </div>
+                      {syncResult.errors.length > 0 && (
+                        <div className="mt-3 text-xs text-red-600">
+                          {syncResult.errors.slice(0, 3).map((err, i) => (
+                            <div key={i} className="flex items-center gap-1">
+                              <AlertCircle className="w-3 h-3" />
+                              {err}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowSyncDialog(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={syncMarkdownPosts}
+                  disabled={syncing}
+                  className="rainbow-button-solid"
+                >
+                  {syncing ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                      Syncing...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Start Sync
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Link href="/admin/posts/new">
+            <Button className="rainbow-button-solid">
+              <Plus className="w-4 h-4 mr-2" />
+              New Post
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card className="glass-card border-gray-100">
+          <CardContent className="p-4">
+            <div className="text-2xl font-bold text-gray-900">{posts.length}</div>
+            <div className="text-sm text-gray-500">Total Posts</div>
+          </CardContent>
+        </Card>
+        <Card className="glass-card border-gray-100">
+          <CardContent className="p-4">
+            <div className="text-2xl font-bold text-green-600">{publishedCount}</div>
+            <div className="text-sm text-gray-500">Published</div>
+          </CardContent>
+        </Card>
+        <Card className="glass-card border-gray-100">
+          <CardContent className="p-4">
+            <div className="text-2xl font-bold text-yellow-600">{draftCount}</div>
+            <div className="text-sm text-gray-500">Drafts</div>
+          </CardContent>
+        </Card>
+        <Card className="glass-card border-gray-100">
+          <CardContent className="p-4">
+            <div className="text-2xl font-bold text-rainbow-purple">{markdownCount}</div>
+            <div className="text-sm text-gray-500">Markdown Files</div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Search */}
@@ -100,12 +295,20 @@ export default function AdminPostsPage() {
           <div className="text-center py-16">
             <div className="text-4xl mb-4">📝</div>
             <p className="text-gray-500">No posts found. Create your first post!</p>
-            <Link href="/admin/posts/new">
-              <Button className="mt-4 rainbow-button-solid">
-                <Plus className="w-4 h-4 mr-2" />
-                Create Post
-              </Button>
-            </Link>
+            <div className="flex justify-center gap-3 mt-4">
+              <Link href="/admin/posts/new">
+                <Button className="rainbow-button-solid">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Post
+                </Button>
+              </Link>
+              {markdownCount > 0 && (
+                <Button variant="outline" onClick={() => setShowSyncDialog(true)}>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Import Markdown
+                </Button>
+              )}
+            </div>
           </div>
         ) : (
           <table className="min-w-full divide-y divide-gray-100">
