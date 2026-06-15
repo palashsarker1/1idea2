@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 263 70% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 70% 96%;
+    --secondary-foreground: 220 70% 30%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 100% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 263 70% 66%;
+    --radius: 1rem;
+
+    --chart-1: 263 70% 66%;
+    --chart-2: 217 91% 60%;
+    --chart-3: 189 94% 43%;
+    --chart-4: 142 71% 45%;
+    --chart-5: 48 96% 53%;
+
+    --rainbow-purple: #8B5CF6;
+    --rainbow-blue: #3B82F6;
+    --rainbow-cyan: #06B6D4;
+    --rainbow-green: #22C55E;
+    --rainbow-yellow: #FACC15;
+    --rainbow-pink: #EC4899;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-white text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .rainbow-text {
+    @apply bg-gradient-to-r from-rainbow-purple via-rainbow-blue via-rainbow-cyan via-rainbow-green via-rainbow-yellow to-rainbow-pink bg-clip-text text-transparent;
+    background-size: 200% 200%;
+  }
+
+  .rainbow-border {
+    position: relative;
+  }
+
+  .rainbow-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4, #22C55E, #FACC15, #EC4899);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .rainbow-border:hover::before {
+    opacity: 1;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-glass;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  }
+
+  .glass-card-rainbow {
+    @apply bg-white/70 backdrop-blur-xl border border-white/30 shadow-glass-lg;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card-rainbow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #8B5CF6, #3B82F6, #06B6D4, #22C55E, #FACC15, #EC4899);
+  }
+
+  .card-3d {
+    @apply relative transition-all duration-500 ease-out;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .card-3d:hover {
+    @apply shadow-3d-hover;
+    transform: translateY(-8px) rotateX(2deg);
+  }
+
+  .rainbow-button {
+    @apply relative overflow-hidden font-semibold transition-all duration-300;
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4, #22C55E, #FACC15, #EC4899);
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  .rainbow-button::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: white;
+    border-radius: inherit;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .rainbow-button span {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4, #22C55E, #FACC15, #EC4899);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  .rainbow-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+  }
+
+  .rainbow-button-solid {
+    @apply text-white font-semibold transition-all duration-300;
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4, #22C55E, #FACC15, #EC4899);
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  .rainbow-button-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+  }
+
+  .gradient-text-animated {
+    background: linear-gradient(90deg, #8B5CF6, #3B82F6, #06B6D4, #22C55E, #FACC15, #EC4899, #8B5CF6);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .hero-bg {
+    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 25%, #E0E7FF 50%, #F1F5F9 75%, #F8FAFC 100%);
+  }
+
+  .section-glow {
+    position: relative;
+  }
+
+  .section-glow::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .input-glass {
+    @apply bg-white/60 backdrop-blur-sm border border-white/50 shadow-sm transition-all duration-300;
+  }
+
+  .input-glass:focus {
+    @apply bg-white/80 border-rainbow-purple/30 ring-2 ring-rainbow-purple/20;
+  }
+
+  .scrollbar-rainbow::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-rainbow::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  .scrollbar-rainbow::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #8B5CF6, #3B82F6, #06B6D4);
+    @apply rounded-full;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
