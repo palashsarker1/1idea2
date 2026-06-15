@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Search, Filter, Star } from 'lucide-react';
+import { Search, Star } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/client';
@@ -61,7 +61,7 @@ export default function ToolsPage() {
             </h1>
             <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
               Discover powerful AI tools to supercharge your workflow. From content
-              creation to development, we've got you covered.
+              creation to development, we&apos;ve got you covered.
             </p>
           </div>
 
@@ -73,7 +73,7 @@ export default function ToolsPage() {
                 placeholder="Search tools..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-12 input-glass"
+                className="pl-12 h-12 input-glass text-gray-900"
               />
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function ToolsPage() {
                   transition={{ delay: index * 0.05 }}
                 >
                   <Link href={`/tools/${tool.slug}`}>
-                    <div className="glass-card-rainbow rounded-2xl p-6 h-full card-3d">
+                    <div className="glass-card-rainbow rounded-2xl p-6 h-full card-3d hover:shadow-lg transition-shadow">
                       <div className="flex items-start justify-between mb-4">
                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rainbow-purple via-rainbow-blue to-rainbow-cyan flex items-center justify-center">
                           <span className="text-2xl">

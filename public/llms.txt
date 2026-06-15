@@ -1,0 +1,60 @@
+# 1Idea AI SaaS Platform
+
+> AI-powered productivity and automation platform for turning ideas into reality.
+
+## What is 1Idea?
+
+1Idea is an AI-powered SaaS platform that helps creators, developers, and innovators transform their ideas into production-ready results. Our platform provides cutting-edge tools for content creation, design, development, and automation.
+
+## Platform Features
+
+- AI Tools Marketplace: Browse 150+ AI tools for productivity, development, design, and marketing
+- Blog CMS: 100+ expert articles on AI tools, SaaS development, productivity strategies, and future technology
+- Admin Dashboard: Complete content management and analytics
+- PWA Support: Install on any device for native-like experience
+
+## Pages
+
+- / - Homepage with feature overview
+- /features - Detailed platform features
+- /pricing - Subscription plans (Starter free, Pro $29, Enterprise custom)
+- /tools - AI tools marketplace with search and filters
+- /blog - 100 SEO-optimized articles on AI and SaaS topics
+- /about - Company story and team
+- /contact - Contact form and information
+- /login - User authentication
+- /signup - Account creation
+
+## Blog Categories
+
+- AI Tools (20 articles): AI productivity tools, ChatGPT alternatives, automation platforms
+- AI Automation (15 articles): Workflow automation, AI agents, business automation
+- SaaS (15 articles): SaaS business models, growth strategies, pricing models
+- Productivity (15 articles): AI time management, remote work tools, productivity workflows
+- Marketing (15 articles): AI marketing, content strategy, SEO optimization
+- Development (10 articles): AI coding assistants, app development, APIs
+- Future Technology (10 articles): AI trends, future of work, AI ethics
+
+## API Endpoints
+
+- GET /api/blog - Fetch all blog posts with metadata
+- GET /api/blog?slug=xxx - Fetch single post by slug
+- POST /api/contact - Send contact form message
+- POST /api/auth/login - User authentication
+- POST /api/auth/signup - User registration
+
+## Technology Stack
+
+- Frontend: Next.js 14, React 18, TypeScript, Tailwind CSS
+- Backend: Supabase (PostgreSQL, Auth, Storage)
+- Icons: Lucide React
+- Animations: Framer Motion
+
+## Installation
+
+Add to home screen for the best experience on mobile devices.
+
+## Contact
+
+- Email: hello@1idea.ai
+- Location: San Francisco, CA

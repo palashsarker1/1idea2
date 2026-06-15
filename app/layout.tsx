@@ -79,11 +79,24 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* PWA Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="1Idea" />
+        <meta name="application-name" content="1Idea" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-TileColor" content="#8B5CF6" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        {/* Icons */}
         <link rel="apple-touch-icon" href="https://i.ibb.co/SDL5CSgV/1idea.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="https://i.ibb.co/SDL5CSgV/1idea.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/SDL5CSgV/1idea.png" />
         <link rel="icon" href="https://i.ibb.co/SDL5CSgV/1idea.png" type="image/png" />
+        <link rel="icon" sizes="32x32" href="https://i.ibb.co/SDL5CSgV/1idea.png" type="image/png" />
+        <link rel="icon" sizes="16x16" href="https://i.ibb.co/SDL5CSgV/1idea.png" type="image/png" />
+        {/* Manifest */}
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <Providers>
